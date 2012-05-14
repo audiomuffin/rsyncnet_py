@@ -1,4 +1,5 @@
 import os
+import sys
 
 def config_rsyncnet():
 	print '''For the following:
@@ -15,8 +16,13 @@ def config_rsyncnet():
 	backing up the Documents folder for username \'nayarb\' would be /Users/nayarb/Documents \
 	on OS X.')
 	
-	# If you do not have an SSH keypair, uncomment the following line
-	# os.system('ssh-keygen -t rsa')
+	# SSH Keypair setup?
+	sshkey = raw_input('Do you have a SSH keypair setup? (y/n) ')
+	if sshkey == 'y':
+		print 'Onto the next step'
+	else:
+		print 'Creating one just in case!'
+		os.system('ssh-keygen -t rsa')
 	
 	# Pushes the private key to your account
 	pushkey = 'scp /var/root/.ssh/id_rsa.pub %s:.ssh/authorized_keys' % (user)
@@ -28,22 +34,12 @@ def config_rsyncnet():
 		exit(0)
 	
 	# creates new file, inserts line, and adds permissions
-	os.system('cat /var/root/rsyncnet.sh')
-    os.system('chmod +x /var/root/rsyncnet.sh')
-    
-    # scheduling
-    print '''
-    The default schedule will backup your directory at 2am. If you'd like to change 
-    that, edit /Library/LaunchAgents/rsyncnet.daily.plist and change 
-    
-    <integer>2</integer>
-    
-    to another number. For example, 10pm would be a value of 22.
-    '''
-    os.system('cd /Library/LaunchAgents')
-    os.system('curl -O http://www.rsync.net/resources/examples/rsyncnet.daily.plist')
+	echos = 'echo /usr/bin/rsync -av %s %s > /var/root/rsyncnet.sh' % (directory, user)
+	os.system(echos)
+	os.system('chmod +x /var/root/rsyncnet.sh')
+	os.system('cd /Library/LaunchAgents')
     os.system('launchctl load rsyncnet.daily.plist')
-    
+    os.system('curl -O http://www.rsync.net/resources/examples/rsyncnet.daily.plist')
     finalt = raw_input('We\'re done! Would you like to test the script now? (y/n)')
     
     if finalt == 'y':
