@@ -18,16 +18,16 @@ def config_rsyncnet():
     print '''What directory do you want to back up? For example,
     backing up the Documents folder for username \'nayarb\' would be /Users/nayarb/Documents
     on OS X.'''
-    
-    dirbool = False:
+
+
+    dirbool = True
 
     while dirbool:
         directory = raw_input('Enter the directory here: ') # user inputs desired directory
-        dircheck = 'ls %s' % (directory) # a variable is created to run 'ls directory'
-        if os.system(dircheck) == 0: # checks to see if directory exists
-            dirbool = False # if it exists, exits quietly
+        if not os.path.exists(directory): # checks to see if directory exists
+            print 'Directory does not exist! Enter a new one.' # if it doesn't, asks the user to enter another directory
         else:
-            'Directory does not exist! Enter a new one.' # if it doesn't, asks the user to enter another directory
+            dirbool = False
 
     # SSH Keypair setup
     sshbool = True
@@ -37,8 +37,8 @@ def config_rsyncnet():
         if sshkey == 'y':
             print 'On to the next step.' # if they do, skips to the next step
             sshbool = False
-        else if sshkey == 'n':
-            print 'I\'ll create an SSH keypair for you.
+        elif sshkey == 'n':
+            print 'I\'ll create an SSH keypair for you.'
             os.system('ssh-keygen -t rsa') # if they don't, creates a pair
             sshbool = False
         else:
@@ -57,8 +57,8 @@ def config_rsyncnet():
                 print 'Pushing key to server failed! Check your \'user\' variable.'
                 exit(0)
             pushbool = False;
-        else if pushme == 'n':
-            pushkey = 'scp /var/root/.ssh/id_rsa.pub %s:.ssh/authorized_keys' % (user) # pushes key along with other keys (edit this for multiple users)
+        elif pushme == 'n':
+            pushkey = 'cat ~/.ssh/id_rsa.pub | %s \'dd of=.ssh/authorized_keys oflag=append conv=notrunc\'' % (user) # pushes key as to not erase others
             if os.system(pushkey) == 0:
                 print 'Pushing key to server successful.'
             else:
@@ -86,7 +86,7 @@ def config_rsyncnet():
             print 'Running script. Thanks for using me! :)'
             os.system('/var/root/rsyncnet.sh')
             finbool = False
-        else if finalt == 'n':
+        elif finalt == 'n':
             print 'Thanks for using me! Please visit http://nayarb.info!'
             exit(0)
             finbool = False
