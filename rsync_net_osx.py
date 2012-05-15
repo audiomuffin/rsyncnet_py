@@ -13,15 +13,20 @@ def config_rsyncnet():
     
     This information should be available in the introductory rsync.net email.
     '''
+
+    global user
+
     user = raw_input('Enter the info here: ')
 
     print '''What directory do you want to back up? For example,
     backing up the Documents folder for username \'nayarb\' would be /Users/nayarb/Documents
     on OS X.'''
 
+    global directory
 
     dirbool = True
 
+    # CHECK DIRECTORY NOT WORKING YET
     while dirbool:
         directory = raw_input('Enter the directory here: ') # user inputs desired directory
         if not os.path.exists(directory): # checks to see if directory exists
@@ -69,14 +74,14 @@ def config_rsyncnet():
             print 'Invalid input! Try again.'
 
     # creates new file, inserts line, and adds permissions
-    echos = 'echo /usr/bin/rsync -av %s %s > /var/root/rsyncnet.sh' % (directory, user)
-    os.system(echos)
+    echomod = ('echo \'/usr/bin/rsync -av %s %s:\' > /var/root/rsyncnet.sh') % (directory, user)
+    os.system(echomod)
     os.system('chmod +x /var/root/rsyncnet.sh')
     
     # set up the schedule
     os.system('cd /Library/LaunchAgents')
-    os.system('launchctl load rsyncnet.daily.plist')
     os.system('curl -O http://www.rsync.net/resources/examples/rsyncnet.daily.plist')
+    os.system('launchctl load rsyncnet.daily.plist')
     
     finbool = True
 
@@ -92,6 +97,7 @@ def config_rsyncnet():
             finbool = False
         else:
             print 'Invalid input! Try again.'
+
     
 if not os.geteuid() == 0: # checks to see if program is run by root user
     print 'Run this script as root. Type \'sudo su root\' and try again.'
