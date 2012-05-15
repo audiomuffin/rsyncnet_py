@@ -2,6 +2,10 @@ rsyncnet_py is a collection of Python scripts designed for simplifying the setup
 backing up a directory using rsync.net. It's very rudimentary (and Mac-only) for the moment, 
 but I'll keep creating and updating scripts as often as I can. Thanks for using! :)
 
+**NOTE**: This is pre-alpha-quality software!
+
+### License
+
 Copyright (C) 2012 Brayan Lopez
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this 

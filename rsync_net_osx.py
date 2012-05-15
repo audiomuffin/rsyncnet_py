@@ -1,4 +1,4 @@
-# current version: 0.0.2
+# current version: 0.1.0
 
 import os
 
@@ -51,7 +51,7 @@ def config_rsyncnet():
     
     # Pushes the private key to your account
     pushbool = True
-
+`
     while pushbool:
         pushme = raw_input('Is this the only computer you will sync? (y/n) ')
         if pushme == 'y':
