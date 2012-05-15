@@ -86,17 +86,18 @@ def config_rsyncnet():
     finbool = True
 
     while finbool:   
-        finalt = raw_input('We\'re done! Would you like to test the script now? (y/n)')
+        finalt = raw_input('We\'re done! Would you like to test the script now? (y/n) ')
         if finalt == 'y':
-            print 'Running script. Thanks for using me! :)'
+            print 'Running script. Thanks for using rsync_net_osx! :)'
             os.system('/var/root/rsyncnet.sh')
             finbool = False
         elif finalt == 'n':
             print 'Thanks for using me! Please visit http://nayarb.info!'
-            exit(0)
             finbool = False
         else:
             print 'Invalid input! Try again.'
+    
+    exit(0)
 
     
 if not os.geteuid() == 0: # checks to see if program is run by root user
