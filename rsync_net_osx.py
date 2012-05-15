@@ -51,7 +51,7 @@ def config_rsyncnet():
     
     # Pushes the private key to your account
     pushbool = True
-`
+    
     while pushbool:
         pushme = raw_input('Is this the only computer you will sync? (y/n) ')
         if pushme == 'y':
