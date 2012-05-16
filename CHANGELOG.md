@@ -1,5 +1,5 @@
 ### 0.1.0
-Script now functional.
+Backup script functional; schedule broken
 
 ### 0.0.2
 Simplified the script. **currently broken**
