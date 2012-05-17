@@ -12,8 +12,19 @@ def config_rsyncnet():
     '''
 
     global user
-
-    user = raw_input('Enter the info here: ')
+    
+    # uses SSH to check if user info checks out
+    userbool = True
+    
+    while userbool:
+        user = raw_input('Enter the info here: ')
+        sshcheck = 'ssh %s' % (user)
+        print '\nWhen asked, please enter your rsync.net password.\n'
+        if os.system(sshcheck) == 0:
+            print '\nYour account is valid.\n'
+            userbool = False
+        else:
+            print '\nIncorrect login info. Try again.\n'
 
     print '''
     \nWhat directory do you want to back up? For example,
