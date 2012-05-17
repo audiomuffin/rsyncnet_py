@@ -1,3 +1,6 @@
+### 0.1.2
+Added SSH check
+
 ### 0.1.1
 Schedule fixed, schedule prompt, cleaned up
 
