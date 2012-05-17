@@ -1,3 +1,6 @@
+### 0.1.1
+Schedule fixed, schedule prompt, cleaned up
+
 ### 0.1.0
 Backup script functional; schedule broken
 

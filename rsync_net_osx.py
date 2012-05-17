@@ -3,14 +3,11 @@
 import os
 
 def config_rsyncnet():
-    print '''For the following:
-    
-    Enter your username and password in the following format:
+    print '''\nFor the following, enter your username and password in the following format:
     
     1234@usw-s001.rsync.net
     
     where '1234' is your user ID and 'usw-s001' designates your main server.
-    
     This information should be available in the introductory rsync.net email.
     '''
 
@@ -18,15 +15,17 @@ def config_rsyncnet():
 
     user = raw_input('Enter the info here: ')
 
-    print '''What directory do you want to back up? For example,
+    print '''
+    \nWhat directory do you want to back up? For example,
     backing up the Documents folder for username \'nayarb\' would be /Users/nayarb/Documents
-    on OS X.'''
+    on OS X.\n
+    '''
 
     global directory
 
     dirbool = True
 
-    # CHECK DIRECTORY NOT WORKING YET
+    # checks to see if the directory input exists
     while dirbool:
         directory = raw_input('Enter the directory here: ') # user inputs desired directory
         if not os.path.exists(directory): # checks to see if directory exists
@@ -40,7 +39,7 @@ def config_rsyncnet():
     while sshbool:
         sshkey = raw_input('Do you have a SSH keypair setup? (y/n) ') # asks user if they have an SSH keypair set up
         if sshkey == 'y':
-            print 'On to the next step.' # if they do, skips to the next step
+            print 'On to the next step.\n' # if they do, skips to the next step
             sshbool = False
         elif sshkey == 'n':
             print 'I\'ll create an SSH keypair for you.'
@@ -79,9 +78,25 @@ def config_rsyncnet():
     os.system('chmod +x /var/root/rsyncnet.sh')
     
     # set up the schedule
-    os.system('cd /Library/LaunchAgents')
-    os.system('curl -O http://www.rsync.net/resources/examples/rsyncnet.daily.plist')
-    os.system('launchctl load rsyncnet.daily.plist')
+    schedbool = True
+
+    while schedbool:
+        schedme = raw_input('\nWould you like to set up a schedule? (y/n) ')
+        if schedme == 'y':
+            os.system('curl -O http://www.rsync.net/resources/examples/rsyncnet.daily.plist')
+            os.system('mv rsyncnet.daily.plist /Library/LaunchAgents/rsyncnet.daily.plist')
+            os.system('launchctl load /Library/LaunchAgents/rsyncnet.daily.plist')
+            print '''
+            \nYour schedule has been set up! It will backup your directory at 2am.
+            If you want to change that, edit the "Integers" variable on the File
+            /Library/LaunchAgents/rsyncnet.daily.plist with your favorite text editor.\n
+            '''
+            schedbool = False
+        elif schedme == 'n':
+            print 'Moving on.'
+            schedbool = False
+        else:
+            print 'Invalid input! Try again.'
     
     finbool = True
 
@@ -105,7 +120,7 @@ if not os.geteuid() == 0: # checks to see if program is run by root user
     exit(0)
 else:
     print '''
-    Welcome to the unofficial rsync.net sync setup for Mac OS X! This little Python script will help
+    \nWelcome to the unofficial rsync.net sync setup for Mac OS X! This little Python script will help
     you setup automatic backups for Mac OS X, using rsync.net, or any other rsync provider.
 
     This has only been tested on OS X 10.6 and 10.7.
@@ -117,6 +132,6 @@ else:
     
     Please visit http://nayarb.info for more information.
 
-    Let's get started! 
+    Let's get started!
     '''        
     config_rsyncnet()
