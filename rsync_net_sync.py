@@ -2,7 +2,7 @@
 
 import os
 
-def config_rsyncnet():
+def mac_rsyncnet():
     print '''\nFor the following, enter your username and password in the following format:
     
     1234@usw-s001.rsync.net
@@ -10,8 +10,6 @@ def config_rsyncnet():
     where '1234' is your user ID and 'usw-s001' designates your main server.
     This information should be available in the introductory rsync.net email.
     '''
-
-    global user
     
     # uses SSH to check if user info checks out
     userbool = True
@@ -31,8 +29,6 @@ def config_rsyncnet():
     backing up the Documents folder for username \'nayarb\' would be /Users/nayarb/Documents
     on OS X.\n
     '''
-
-    global directory
 
     dirbool = True
 
@@ -123,7 +119,11 @@ def config_rsyncnet():
         else:
             print 'Invalid input! Try again.'
     
-    exit(0)
+def win_rsyncnet():
+    print '\nSorry! This hasn\'t been implemented yet. :(\n'
+    
+def nix_rsyncnet():
+    print '\nSorry! This hasn\'t been implemented yet. :(\n'
 
     
 if not os.geteuid() == 0: # checks to see if program is run by root user
@@ -144,5 +144,21 @@ else:
     Please visit http://nayarb.info for more information.
 
     Let's get started!
-    '''        
-    config_rsyncnet()
+    ''' 
+
+global user
+global directory
+
+choosebool = True
+    
+while choosebool:
+    choicex = raw_input('Choose which you\'d like to sync (m/w/u): ')
+    if choicex == 'm':
+        mac_rsyncnet()
+        choosebool = False
+    elif choicex == 'w':
+        win_rsyncnet()
+    elif choicex == 'u':
+        nix_rsyncnet()
+    else:
+        print 'Invalid input! Try again.'
