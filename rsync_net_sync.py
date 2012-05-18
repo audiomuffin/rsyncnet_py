@@ -2,7 +2,25 @@
 
 import os
 
-def mac_rsyncnet():
+def nix_rsyncnet():
+    
+    # asks user what OS they are using
+    nixbool = True
+    
+    global oschoice
+    
+    while nixbool:
+        nixask = raw_input('Which OS are you using? Input m for Mac OS X, and u for Unix \
+        or Unix-like OS (such as GNU/Linux or BSD (m/u): ')
+        if nixask == 'm':
+            oschoice = 'm'
+        elif nixask = 'u':
+            oschoice = 'u'
+        else:
+            print 'Invalid input! Try again.'
+    
+    global user
+    global directory
     print '''\nFor the following, enter your username and password in the following format:
     
     1234@usw-s001.rsync.net
@@ -27,7 +45,9 @@ def mac_rsyncnet():
     print '''
     \nWhat directory do you want to back up? For example,
     backing up the Documents folder for username \'nayarb\' would be /Users/nayarb/Documents
-    on OS X.\n
+    on OS X.
+    
+    For GNU/Linux or BSD, it might be /home/nayarb/Documents.
     '''
 
     dirbool = True
@@ -86,25 +106,38 @@ def mac_rsyncnet():
     
     # set up the schedule
     schedbool = True
-
-    while schedbool:
-        schedme = raw_input('\nWould you like to set up a schedule? (y/n) ')
-        if schedme == 'y':
-            os.system('curl -O http://www.rsync.net/resources/examples/rsyncnet.daily.plist')
-            os.system('mv rsyncnet.daily.plist /Library/LaunchAgents/rsyncnet.daily.plist')
-            os.system('launchctl load /Library/LaunchAgents/rsyncnet.daily.plist')
-            print '''
-            \nYour schedule has been set up! It will backup your directory at 2am.
-            If you want to change that, edit the "Integers" variable on the File
-            /Library/LaunchAgents/rsyncnet.daily.plist with your favorite text editor.\n
-            '''
-            schedbool = False
-        elif schedme == 'n':
-            print 'Moving on.'
-            schedbool = False
-        else:
-            print 'Invalid input! Try again.'
     
+    if oschoice == 'm': # for Mac OS X
+        while schedbool:
+            schedme = raw_input('\nWould you like to set up a schedule? (y/n) ')
+            if schedme == 'y':
+                os.system('curl -O http://www.rsync.net/resources/examples/rsyncnet.daily.plist')
+                os.system('mv rsyncnet.daily.plist /Library/LaunchAgents/rsyncnet.daily.plist')
+                os.system('launchctl load /Library/LaunchAgents/rsyncnet.daily.plist')
+                print '''
+                \nYour schedule has been set up! It will backup your directory at 2am.
+                If you want to change that, edit the "Integers" variable on the File
+                /Library/LaunchAgents/rsyncnet.daily.plist with your favorite text editor.\n
+                '''
+                schedbool = False
+            elif schedme == 'n':
+                print 'Moving on.'
+                schedbool = False
+            else:
+                print 'Invalid input! Try again.'
+    else: # for Unix (and OS X users who prefer cron)
+        while schedbool:
+            schedme = raw_input('\nWould you like to set up a schedule? (y/n) ')
+            if schedme == 'y':
+                print 'This is where you will set up and run a cron job.'
+                schedbool = False
+            elif schedme == 'n':
+                print 'Moving on.'
+                schedbool = False
+            else:
+                print 'Invalid input! Try again.'
+            
+    # ask to test the script        
     finbool = True
 
     while finbool:   
@@ -120,9 +153,6 @@ def mac_rsyncnet():
             print 'Invalid input! Try again.'
     
 def win_rsyncnet():
-    print '\nSorry! This hasn\'t been implemented yet. :(\n'
-    
-def nix_rsyncnet():
     print '\nSorry! This hasn\'t been implemented yet. :(\n'
 
     
@@ -146,19 +176,14 @@ else:
     Let's get started!
     ''' 
 
-global user
-global directory
-
 choosebool = True
     
 while choosebool:
-    choicex = raw_input('Choose which you\'d like to sync (m/w/u): ')
-    if choicex == 'm':
-        mac_rsyncnet()
+    choicex = raw_input('Choose which you\'d like to sync (u/w): ')
+    if choicex == 'u':
+        nix_rsyncnet()
         choosebool = False
     elif choicex == 'w':
         win_rsyncnet()
-    elif choicex == 'u':
-        nix_rsyncnet()
     else:
         print 'Invalid input! Try again.'
