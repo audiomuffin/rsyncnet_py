@@ -10,12 +10,13 @@ def nix_rsyncnet():
     global oschoice
     
     while nixbool:
-        nixask = raw_input('Which OS are you using? Input m for Mac OS X, and u for Unix \
-        or Unix-like OS (such as GNU/Linux or BSD (m/u): ')
+        nixask = raw_input('Which OS are you using? Input m for Mac OS X, and u for Unix or Unix-like OS (such as GNU/Linux or BSD (m/u): ')
         if nixask == 'm':
             oschoice = 'm'
-        elif nixask = 'u':
+            nixbool = False
+        elif nixask == 'u':
             oschoice = 'u'
+            nixbool = False
         else:
             print 'Invalid input! Try again.'
     
@@ -125,11 +126,24 @@ def nix_rsyncnet():
                 schedbool = False
             else:
                 print 'Invalid input! Try again.'
-    else: # for Unix (and OS X users who prefer cron)
+    else: # for Unix (and OS X users who prefer cron) WARNING: NOT TESTED YET
         while schedbool:
             schedme = raw_input('\nWould you like to set up a schedule? (y/n) ')
             if schedme == 'y':
-                print 'This is where you will set up and run a cron job.'
+                print '''
+                \nSorry, but you\'ll have to edit this by hand. I'll run crontab -e 
+                for you and you can edit it. If you don't know how to do it, search 
+                it up on Google. For now, you can copy/paste this to have it backing 
+                up at 2am:
+                
+                * 2 * * * /var/root/rsyncnet.sh
+                
+                Just change the 2 into any number between 0 and 23 for what hour you'd
+                like.\n
+                '''
+                raw_input('\nPress a key to continue.\n')
+                
+                os.system('crontab -e')
                 schedbool = False
             elif schedme == 'n':
                 print 'Moving on.'
@@ -152,10 +166,7 @@ def nix_rsyncnet():
         else:
             print 'Invalid input! Try again.'
     
-def win_rsyncnet():
-    print '\nSorry! This hasn\'t been implemented yet. :(\n'
 
-    
 if not os.geteuid() == 0: # checks to see if program is run by root user
     print 'Run this script as root. Type \'sudo su root\' and try again.'
     exit(0)
@@ -164,26 +175,13 @@ else:
     \nWelcome to the unofficial rsync.net sync setup for Mac OS X! This little Python script will help
     you setup automatic backups for Mac OS X, using rsync.net, or any other rsync provider.
 
-    This has only been tested on OS X 10.6 and 10.7.
-
-    If you're a GNU/Linux, BSD user, or someone who likes something more cross-platform, a script will
-    be available to you soon.
-
+    This has only been tested on OS X 10.6 and 10.7. The Unix version is testing.
+    
     I am not responsible for anything that goes wrong. You use this script at your own risk.
     
     Please visit http://nayarb.info for more information.
 
-    Let's get started!
-    ''' 
-
-choosebool = True
+    Let's get started!\n
+    '''
     
-while choosebool:
-    choicex = raw_input('Choose which you\'d like to sync (u/w): ')
-    if choicex == 'u':
-        nix_rsyncnet()
-        choosebool = False
-    elif choicex == 'w':
-        win_rsyncnet()
-    else:
-        print 'Invalid input! Try again.'
+nix_rsyncnet()
