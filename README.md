@@ -1,7 +1,7 @@
 rsyncnet_py
 ===========
 
-rsyncnet_py is a collection of Python scripts designed for setting up backups on [rsync.net](http://rsync.net), without fiddling around with a GUI or a ton of scripts.
+rsyncnet_py is a Python script designed for setting up backups on [rsync.net](http://rsync.net), without fiddling around with a GUI or a ton of scripts.
 
 This script works for both Mac OS X and (possibly) any Unix or Unix-like operating system, such as GNU/Linux, BSD, etc.
 
