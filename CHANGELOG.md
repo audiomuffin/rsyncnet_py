@@ -1,3 +1,6 @@
+### 0.2.0
+Cleaned up scrip
+
 ### 0.1.2
 Added SSH check, added experimental Unix support, removed MS Windows support
 
