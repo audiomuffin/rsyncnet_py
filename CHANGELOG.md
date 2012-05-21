@@ -1,5 +1,5 @@
 ### 0.1.2
-Added SSH check, added experimental Unix support
+Added SSH check, added experimental Unix support, removed MS Windows support
 
 ### 0.1.1
 Schedule fixed, schedule prompt, cleaned up
