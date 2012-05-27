@@ -105,8 +105,8 @@ while pushbool:
         else:
             print 'Pushing key to server failed! Check your \'user\' variable.'
             exit(0)
-    elif pushme == 'n': # CURRENTLY BROKEN
-        pushkey = 'cat ~/.ssh/id_rsa.pub | %s \'dd of=.ssh/authorized_keys oflag=append conv=notrunc\'' % (user) # pushes key as to not erase others
+    elif pushme == 'n': # adds an ssh key to exising authorized_keys file
+        pushkey = 'cat ~/.ssh/id_rsa.pub | ssh %s \'dd of=.ssh/authorized_keys oflag=append conv=notrunc\'' % (user) # pushes key as to not erase others
         if os.system(pushkey) == 0:
             print 'Pushing key to server successful.'
             pushbool = False
